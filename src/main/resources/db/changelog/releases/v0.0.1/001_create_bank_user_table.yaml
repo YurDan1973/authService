@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-bank-user
+      author: Yuri Danilov
+      changes:
+        - createTable:
+            tableName: bank_user
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(45)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(45)
+                  constraints:
+                    nullable: false

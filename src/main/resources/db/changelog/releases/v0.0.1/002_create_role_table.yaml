@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-role
+      author: Yuri Danilov
+      changes:
+        - createTable:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: role_name
+                  type: VARCHAR(45)
+                  constraints:
+                    nullable: false

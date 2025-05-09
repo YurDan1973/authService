@@ -1,0 +1,21 @@
+#spring.datasource.url=jdbc:postgresql://localhost:5432/your_database
+#spring.datasource.username=your_username
+#spring.datasource.password=your_password
+#spring.jpa.hibernate.ddl-auto=none
+#spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.yaml
+#jwt.secret=your_secret_key_here
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth_service
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    jwt:
+      secret: our_secret_key_here
+
