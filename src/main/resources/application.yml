@@ -19,4 +19,4 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     jwt:
 #      secret: your-very-secret-key
-      secret: Jura
+      secret: MySuperSecretKey12345
