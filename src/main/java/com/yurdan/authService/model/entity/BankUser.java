@@ -17,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BankUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private UUID uuid;
 
