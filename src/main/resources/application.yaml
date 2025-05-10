@@ -1,0 +1,55 @@
+#spring.datasource.url=jdbc:postgresql://localhost:5432/auth_service
+#spring.datasource.username=postgres
+#spring.datasource.password=postgres
+#spring.jpa.hibernate.ddl-auto=none
+#spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.yaml
+#jwt.secret=MySuperSecretKey12345
+
+
+#spring:
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/auth_service
+#    username: postgres
+#    password: postgres
+#    driver-class-name: org.postgresql.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: none
+#
+#  liquibase:
+#    change-log: classpath:db/changelog/db.changelog-master.yaml
+#
+#jwt:
+#  secret: MySuperSecretKey12345
+
+#spring:
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/auth_service
+#    username: postgres
+#    password: postgres
+#    driver-class-name: org.postgresql.Driver
+#  jpa:
+#    hibernate:
+#      ddl-auto: none
+#jwt:
+#  secret: MySuperSecretKey12345
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth_service
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/releases/v0.0.1/db.changelog-master.yaml
+
+jwt:
+  secret: "MySuperSecretKey12345"
+
