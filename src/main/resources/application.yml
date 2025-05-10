@@ -18,4 +18,3 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     jwt:
       secret: our_secret_key_here
-
