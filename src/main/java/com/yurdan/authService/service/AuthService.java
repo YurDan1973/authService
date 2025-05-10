@@ -1,14 +1,16 @@
 package com.yurdan.authService.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yurdan.authService.model.LoginRequest;
 import com.yurdan.authService.model.entity.BankUser;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.yurdan.authService.repository.BankUserRepository;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthService {
@@ -16,23 +18,59 @@ public class AuthService {
     @Value("${jwt.secret}")
     private String secret;
 
-    public String generateToken(BankUser bankUser) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, bankUser.getPassword());
-    }
+    private final BankUserRepository bankUserRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder()
-                .setClaims(claims)
-//                .setSubject(subject)
-//                .setIssuedAt(new Date(System.currentTimeMillis()))
-//                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 часов
-                .signWith(SignatureAlgorithm.HS256, secret)
-                .compact();
+    public AuthService(BankUserRepository bankUserRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.bankUserRepository = bankUserRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public String login(LoginRequest loginRequest) {
-        return null;
+        BankUser bankUser = bankUserRepository.findByEmail(loginRequest.getEmail());
+        if (bankUser == null || !passwordEncoder.matches(loginRequest.getPassword(), bankUser.getPassword())) {
+            throw new RuntimeException("Invalid email or password");
+        }
+
+        return generateToken(bankUser);
+    }
+
+    private String generateToken(BankUser user) {
+        try {
+            Map<String, Object> payload = new HashMap<>();
+            payload.put("uuid", user.getUuid().toString());
+            payload.put("email", user.getEmail());
+            payload.put("roles", user.getRoles().stream()
+                    .map(role -> role.getRoleName().name())
+                    .collect(Collectors.toList()));
+
+            String payloadJson = new ObjectMapper().writeValueAsString(payload);
+
+            return Jwts.builder()
+                    .setPayload(payloadJson)
+                    .setIssuedAt(new Date())
+                    .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 часов
+                    .signWith(SignatureAlgorithm.HS256, secret.getBytes())
+                    .compact();
+        } catch (Exception e) {
+            throw new RuntimeException("Token generation failed", e);
+        }
+    }
+
+    public boolean isAdmin(String token) {
+        try {
+            String[] chunks = token.split("\\.");
+            if (chunks.length < 2) throw new IllegalArgumentException("Invalid token");
+
+            String payloadJson = new String(Base64.getDecoder().decode(chunks[1]));
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> payload = mapper.readValue(payloadJson, Map.class);
+
+            List<?> roles = (List<?>) payload.get("roles");
+            return roles.contains("ADMIN");
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
 

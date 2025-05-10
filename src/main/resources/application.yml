@@ -3,7 +3,8 @@
 #spring.datasource.password=your_password
 #spring.jpa.hibernate.ddl-auto=none
 #spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.yaml
-#jwt.secret=your_secret_key_here
+#jwt.secret=your-very-secret-key
+
 
 spring:
   datasource:
@@ -17,4 +18,5 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     jwt:
-      secret: our_secret_key_here
+#      secret: your-very-secret-key
+      secret: Jura

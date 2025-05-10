@@ -5,10 +5,11 @@ import com.yurdan.authService.model.entity.BankUser;
 import com.yurdan.authService.repository.BankUserRepository;
 import com.yurdan.authService.service.AuthService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -17,18 +18,11 @@ public class AuthController {
 
     private final AuthService authService;
     private final BankUserRepository bankUserRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         try {
-//            authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
-//            );
-
-//      // Получаем UserDetails для генерации JWT
-//            UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
-//            String jwt = authService.generateToken(userDetails);
-//            return ResponseEntity.ok(jwt);
             return ResponseEntity.ok(authService.login(loginRequest));
         } catch (Exception e) {
             return ResponseEntity.status(401).body("Invalid email or password");
@@ -36,17 +30,33 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<BankUser> register(@RequestBody BankUser bankUser) {
-        // Здесь можно добавить валидацию и проверку на существование пользователя
+    public ResponseEntity<?> register(@RequestBody BankUser bankUser) {
+        if (bankUserRepository.findByEmail(bankUser.getEmail()) != null) {
+            return ResponseEntity.badRequest().body("User already exists");
+        }
+
+        bankUser.setPassword(passwordEncoder.encode(bankUser.getPassword()));
         BankUser savedUser = bankUserRepository.save(bankUser);
         return ResponseEntity.ok(savedUser);
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<BankUser>> getAllUsers() {
-        List<BankUser> users = bankUserRepository.findAll();
+    public ResponseEntity<?> getAllUsers(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(401).body("Missing or invalid Authorization header");
+        }
+
+        String token = authHeader.replace("Bearer ", "");
+
+        if (!authService.isAdmin(token)) {
+            return ResponseEntity.status(403).body("Access denied");
+        }
+
+        Page<BankUser> users = bankUserRepository.findAll(PageRequest.of(page, size));
         return ResponseEntity.ok(users);
     }
-
-    // Можно добавить другие методы для управления пользователями
 }
