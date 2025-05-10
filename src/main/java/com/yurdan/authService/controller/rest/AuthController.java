@@ -6,10 +6,6 @@ import com.yurdan.authService.repository.BankUserRepository;
 import com.yurdan.authService.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,20 +17,19 @@ public class AuthController {
 
     private final AuthService authService;
     private final BankUserRepository bankUserRepository;
-    private final AuthenticationManager authenticationManager;
-    private final UserDetailsService userDetailsService;
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
-            );
+//            authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+//            );
 
-            // Получаем UserDetails для генерации JWT
-            UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
-            String jwt = authService.generateToken(userDetails);
-            return ResponseEntity.ok(jwt);
+//      // Получаем UserDetails для генерации JWT
+//            UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
+//            String jwt = authService.generateToken(userDetails);
+//            return ResponseEntity.ok(jwt);
+            return ResponseEntity.ok(authService.login(loginRequest));
         } catch (Exception e) {
             return ResponseEntity.status(401).body("Invalid email or password");
         }
