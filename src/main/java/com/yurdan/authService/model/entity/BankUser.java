@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "bank_user")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "bank_user")
 public class BankUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
