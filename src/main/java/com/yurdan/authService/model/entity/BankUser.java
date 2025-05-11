@@ -17,7 +17,7 @@ import java.util.UUID;
 @Table(name = "bank_user")
 public class BankUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
     private UUID uuid;
 
@@ -29,8 +29,8 @@ public class BankUser {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
+            name = "bank_user_role",
+            joinColumns = @JoinColumn(name = "bank_user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 

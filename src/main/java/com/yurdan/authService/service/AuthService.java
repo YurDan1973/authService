@@ -1,19 +1,4 @@
-//package com.yurdan.authService.service;
-//
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.yurdan.authService.model.LoginRequest;
-//import com.yurdan.authService.model.entity.BankUser;
-//import com.yurdan.authService.repository.BankUserRepository;
-//import io.jsonwebtoken.*;
-//import lombok.AllArgsConstructor;
-//import lombok.Setter;
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.*;
-//import java.util.stream.Collectors;
-//
+
 //@Service
 //public class AuthService {
 //

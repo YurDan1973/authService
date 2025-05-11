@@ -5,7 +5,8 @@
 #spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.yaml
 #jwt.secret=MySuperSecretKey12345
 
-
+server:
+  port: 8080
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/auth_service
@@ -17,37 +18,8 @@ spring:
       ddl-auto: none
   liquibase:
     enabled: true
-    change-log: classpath:db/changelog/releases/v0.0.1/db.changelog-master.yaml
+    change-log: classpath:db/changelog/releases/db.changelog-master.yaml
 jwt:
-  secret: "MySuperSecretKey12345"
+  secret: "luAUigPkQylTDBN0J58GVnKVgfhi+T2oOitIk6u8/HqGVBOxuJFANQD5OHPVKHdxsdxIUiNyIRh18PvzCCdGRQ=="
 
-
-#  spring:
-#    jpa:
-#    hibernate:
-#      ddl-auto: none
-#    properties:
-#      hibernate:
-#        default_schema: public
-#        order_inserts: true
-#        enable_lazy_load_no_trans: true
-#        dialect: org.hibernate.dialect.PostgreSQLDialect
-#        jdbc:
-#          lob:
-#            non_contextual_creation: true
-#          batch_size: 20
-#        generate_statistics: false
-#    show-sql: true
-#    database: postgresql
-#    datasource:
-#      driver-class-name: org.postgresql.Driver
-#      url: jdbc:postgresql://localhost:5432/auth_service
-#      username: postgres
-#      password: postgres
-#    liquibase:
-#      default_schema: public
-#      enabled: true
-#      change-log: classpath:db/changelog/releases/v0.0.1/db.changelog-master.yaml
-#  jwt:
-#    secret: "MySuperSecretKey12345"
 

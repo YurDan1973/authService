@@ -77,7 +77,9 @@
 package com.yurdan.authService.controller.rest;
 
 import com.yurdan.authService.model.LoginRequest;
+import com.yurdan.authService.model.dto.RegisterDto;
 import com.yurdan.authService.model.entity.BankUser;
+import com.yurdan.authService.model.entity.Role;
 import com.yurdan.authService.repository.BankUserRepository;
 import com.yurdan.authService.service.AuthService;
 import io.jsonwebtoken.*;
@@ -87,6 +89,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -106,16 +110,31 @@ public class AuthController {
         }
     }
 
+//    @PostMapping("/register")
+//    public ResponseEntity<?> register(@RequestBody BankUser bankUser) {
+//        if (bankUserRepository.findByEmail(bankUser.getEmail()) != null) {
+//            return ResponseEntity.badRequest().body("User already exists");
+//        }
+//
+//        bankUser.setPassword(passwordEncoder.encode(bankUser.getPassword()));
+//        BankUser savedUser = bankUserRepository.save(bankUser);
+//        return ResponseEntity.ok(savedUser);
+//    }
+
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody BankUser bankUser) {
-        if (bankUserRepository.findByEmail(bankUser.getEmail()) != null) {
+    public ResponseEntity<?> register(@RequestBody RegisterDto registerDto) {
+        if (bankUserRepository.findByEmail(registerDto.email()) != null) {
             return ResponseEntity.badRequest().body("User already exists");
         }
-
-        bankUser.setPassword(passwordEncoder.encode(bankUser.getPassword()));
+        BankUser bankUser = new BankUser();
+        bankUser.setEmail(registerDto.email());
+        bankUser.setPassword(passwordEncoder.encode(registerDto.password()));
+//        bankUser.setRoles(List.of(new Role(1L, Role.RoleName.USER))); // Добавлялся только USER
+        bankUser.setRoles(List.of(new Role(1L, Role.RoleName.USER), new Role(2L, Role.RoleName.ADMIN)));
         BankUser savedUser = bankUserRepository.save(bankUser);
         return ResponseEntity.ok(savedUser);
     }
+
 
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers(
