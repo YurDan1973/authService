@@ -53,3 +53,38 @@ spring:
 jwt:
   secret: "MySuperSecretKey12345"
 
+
+
+#  spring:
+#    jpa:
+#    hibernate:
+#      ddl-auto: none
+#    properties:
+#      hibernate:
+#        default_schema: ${APP_POSTGRESQL_SCHEMA:public}
+#        order_inserts: true
+#        enable_lazy_load_no_trans: true
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        jdbc:
+#          lob:
+#            non_contextual_creation: true
+#          batch_size: 20
+#        generate_statistics: false
+#    show-sql: true
+#    database: postgresql
+#    datasource:
+#      driver-class-name: org.postgresql.Driver
+#      url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/auth_service
+#      username: ${DATABASE_USERNAME:postgres}
+#      password: ${DATABASE_PASSWORD:postgres}
+#    liquibase:
+#      default_schema: ${APP_POSTGRESQL_SCHEMA:public}
+#      enabled: true
+#      change-log: db/changelog/releases/v0.0.1/db.changelog-master.yaml
+#  jwt:
+#    access:
+#      secret: ${JWT_ACCESS_SECRET:9CeoZ+XP0l4Bc+nHo9zZEM2Fv6vXby2WtptPE6XZVEoEQAieZK0r+ns3eiho7uu9j3mUv3gSeW+pCXKvBcq5ng==}
+#      expiration: ${JWT_ACCESS_EXPIRATION:1800}
+#    refresh:
+#      secret: ${JWT_REFRESH_SECRET:72A7St1ySWdvyyvqYLgiPOw1/yVhBNUZEU7iiOo/ETdX0ghkk+K9Kk5HNK8dAqo28RoDNttL3j+HjAg4s/67IA==}
+#      expiration: ${JWT_REFRESH_EXPIRATION:3600}
