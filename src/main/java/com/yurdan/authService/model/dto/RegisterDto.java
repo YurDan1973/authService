@@ -1,4 +1,8 @@
 package com.yurdan.authService.model.dto;
 
-public record RegisterDto (String email, String password) {
+import com.yurdan.authService.model.entity.Role;
+
+import java.util.List;
+
+public record RegisterDto (String email, String password, List<Role> roles) {
 }

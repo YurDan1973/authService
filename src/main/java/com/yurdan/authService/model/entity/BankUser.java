@@ -18,7 +18,7 @@ import java.util.UUID;
 public class BankUser {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private UUID uuid;
 
     @Column(name = "email", nullable = false)

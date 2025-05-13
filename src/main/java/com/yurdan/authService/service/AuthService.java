@@ -83,7 +83,7 @@ import java.util.stream.Collectors;
 public class AuthService {
 
     @Getter
-    @Value("${jwt.secret)")
+    @Value("${jwt.secret}")
     private String secret;
 
     private final BankUserRepository bankUserRepository;
@@ -98,12 +98,12 @@ public class AuthService {
         return generateToken(bankUser);
     }
 
-    private String generateToken(BankUser user) {
+    private String generateToken(BankUser bankUser) {
         try {
             Map<String, Object> payload = new HashMap<>();
-            payload.put("uuid", user.getUuid().toString());
-            payload.put("email", user.getEmail());
-            payload.put("roles", user.getRoles().stream()
+            payload.put("uuid", bankUser.getUuid().toString());
+            payload.put("email", bankUser.getEmail());
+            payload.put("roles", bankUser.getRoles().stream()
                     .map(role -> role.getRoleName().name())
                     .collect(Collectors.toList()));
 
