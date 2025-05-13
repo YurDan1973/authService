@@ -83,7 +83,7 @@ import java.util.stream.Collectors;
 public class AuthService {
 
     @Getter
-    @Value("${jwt.secret}")
+    @Value("${jwt.secret)")
     private String secret;
 
     private final BankUserRepository bankUserRepository;
@@ -111,8 +111,8 @@ public class AuthService {
 
             return Jwts.builder()
                     .setPayload(payloadJson)
-                    .setIssuedAt(new Date())
-                    .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+//                    .setIssuedAt(new Date())
+//                    .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                     .signWith(SignatureAlgorithm.HS256, secret.getBytes())
                     .compact();
         } catch (Exception e) {

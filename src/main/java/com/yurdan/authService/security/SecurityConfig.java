@@ -20,7 +20,8 @@ public class SecurityConfig {
                         .disable() // Отключение CSRF защиты (использовать с осторожностью)
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login").permitAll()
+//                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/auth/login", "/auth/register").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
@@ -41,6 +42,7 @@ public class SecurityConfig {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
 }
