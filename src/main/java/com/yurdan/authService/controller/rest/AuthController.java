@@ -86,8 +86,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/auth")
@@ -137,18 +140,14 @@ public class AuthController {
 
 
     @GetMapping("/users")
-    public ResponseEntity<?> getAllUsers(
-            @RequestHeader("Authorization") String authHeader,
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<?> getAllUsers(Principal principal,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(401).body("Missing or invalid Authorization header");
-        }
+        BankUser bankUser = bankUserRepository.findByEmail(principal.getName());
 
-        String token = authHeader.replace("Bearer ", "");
-
-        if (!authService.isAdmin(token)) {
+        if (bankUser == null || bankUser.getRoles().stream().noneMatch(role -> role.getRoleName().name().equals("ADMIN"))) {
             return ResponseEntity.status(403).body("Access denied");
         }
 
