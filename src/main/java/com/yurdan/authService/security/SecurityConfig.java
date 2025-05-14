@@ -16,16 +16,16 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
         http
-                .csrf(csrf -> csrf
-                        .disable() // Отключение CSRF защиты (использовать с осторожностью)
+                .csrf(csrf -> csrf.disable()) // Отключение CSRF защиты (использовать с осторожностью)
+                .authorizeHttpRequests(auth -> auth
+                        //.requestMatchers("/login").permitAll()
+                        .requestMatchers("/auth/login", "/auth/register").permitAll()
+                        .anyRequest().authenticated()
                 )
-                .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers("/login").permitAll()
-                                .requestMatchers("/auth/login", "/auth/register").permitAll()
-                                .anyRequest().authenticated()
-                );
+                .addFilterBefore(jwtFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
@@ -46,19 +46,6 @@ public class SecurityConfig {
     public BCryptPasswordEncoder passwordEncoder() {
 
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/auth/register").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(jwtFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
     }
 
 }

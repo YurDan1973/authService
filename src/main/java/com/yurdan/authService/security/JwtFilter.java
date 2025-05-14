@@ -1,7 +1,5 @@
 package com.yurdan.authService.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yurdan.authService.model.entity.Role.RoleName;
 import io.jsonwebtoken.*;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

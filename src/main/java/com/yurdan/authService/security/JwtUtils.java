@@ -15,7 +15,7 @@ public class JwtUtils {
 
     @Value("${jwt.secret}")
     private String secret;
-
+// Этот метод ранее был расположен в классе AuthController
     public boolean validateToken(String token) {
         try {
             Jwts.parser()
@@ -40,14 +40,15 @@ public class JwtUtils {
         }
         return Collections.emptyList();
     }
-
+// Ранее эта логика была в методе isAdmin() в классе AuthService
     private Map<String, Object> getPayload(String token) {
         String[] parts = token.split("\\.");
         if (parts.length < 2) throw new IllegalArgumentException("Invalid token");
 
         String payloadJson = new String(Base64.getDecoder().decode(parts[1]));
         try {
-            return new ObjectMapper().readValue(payloadJson, new TypeReference<>() {});
+            return new ObjectMapper().readValue(payloadJson, new TypeReference<>() {
+            });
         } catch (Exception e) {
             throw new RuntimeException("Invalid token payload", e);
         }
