@@ -23,8 +23,8 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(authorize -> authorize
 //                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/auth/login", "/auth/register").permitAll()
-                        .anyRequest().authenticated()
+                                .requestMatchers("/auth/login", "/auth/register").permitAll()
+                                .anyRequest().authenticated()
                 );
         return http.build();
     }
@@ -36,8 +36,8 @@ public class SecurityConfig {
 
         // Настройка аутентификации (например, in-memory, JDBC и т.д.)
 
-         authenticationManagerBuilder.inMemoryAuthentication()
-             .withUser("user").password("{noop}password").roles("USER");
+        authenticationManagerBuilder.inMemoryAuthentication()
+                .withUser("user").password("{noop}password").roles("USER");
 
         return authenticationManagerBuilder.build();
     }
